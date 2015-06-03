@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/myTabHost"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical" >
+
+    <FrameLayout
+        android:id="@+id/mainFragmentLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0px"
+        android:layout_weight="1" >
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="vertical" >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="#d3d3d3" />
+
+        <RadioGroup
+            android:id="@+id/home_radioBtn_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
+
+            <RadioButton
+                android:id="@+id/homeRadioButton"
+                style="@style/radio_botton_style"
+                android:checked="true"
+                android:drawableTop="@drawable/radiobtn_homepage_selector"
+                android:textColor="@drawable/radio_text_selector"
+                android:text="@string/main_menu_string"
+                android:textSize="10sp" />
+
+            <RadioButton
+                android:id="@+id/settingRadioButton"
+                style="@style/radio_botton_style"
+                android:drawableTop="@drawable/radiobtn_setting_selector"
+                android:textColor="@drawable/radio_text_selector"
+                android:text="@string/setting_string"
+                android:textSize="10sp" />
+
+            <RadioButton
+                android:id="@+id/smartHomeRadioButton"
+                style="@style/radio_botton_style"
+                android:drawableTop="@drawable/radiobtn_myaccount_selector"
+                android:textColor="@drawable/radio_text_selector"
+                android:text="@string/smart_home_string"
+                android:textSize="10sp" />
+
+            <!--
+                 <RadioButton
+                android:id="@+id/helpRadioButton"
+                style="@style/radio_botton_style"
+                android:drawableTop="@drawable/radiobtn_help_selector"
+                android:text="@string/radiobtn_help_string"
+                android:textColor="@drawable/radio_text_selector"
+                android:textSize="10sp" />
+            -->
+
+        </RadioGroup>
+    </LinearLayout>
+
+</LinearLayout>
