@@ -9,9 +9,6 @@ import javax.crypto.spec.SecretKeySpec;
 
 /**
  * 
- * 版权：融贯资讯 <br/>
- * 作者：shaohua.ai@rogrand.com <br/>
- * 生成日期：2013-11-6 <br/>
  * 描述：AES加解密
  */
 public class Encryption {

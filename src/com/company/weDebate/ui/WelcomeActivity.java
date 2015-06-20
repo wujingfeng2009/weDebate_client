@@ -1,8 +1,9 @@
 package com.company.weDebate.ui;
 
-import com.company.weDebate.R;
 import com.company.weDebate.base.BaseActivity;
-
+import com.company.weDebate.helper.GetTokenHelper;
+import com.company.weDebate.preferences.MyPreference;
+import com.company.weDebate.R;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
@@ -12,9 +13,10 @@ import android.os.Message;
  */
 
 public class WelcomeActivity extends BaseActivity {
-	public final static String LOG_TAG = "pg_600";
-	public final static int STATE = 0x03;
-	private final static long stateTime = 2000l;// 欢迎页停留时间
+	public final static String LOG_TAG = "weDebate";
+	public final static int STATE = 0x01;
+	private final static long stateTime = 3000l;// 欢迎页停留时间
+	private MyPreference sp;
 
 	@Override
 	protected void onDestroy() {
@@ -26,6 +28,10 @@ public class WelcomeActivity extends BaseActivity {
 
 	@Override
 	protected void initData() {
+		sp = new MyPreference(WelcomeActivity.this);
+		
+		GetTokenHelper instance = GetTokenHelper.getInstance();
+		instance.doGetToken(this);
 	}
 
 	@Override
@@ -44,16 +50,21 @@ public class WelcomeActivity extends BaseActivity {
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
 			switch (msg.what) {
-				case STATE :
+			case STATE :
+				if (sp.getPerferenceIsFirst()) {
+					startActivity(new Intent(WelcomeActivity.this, GuideActivity.class));
+				}else  {
 					Intent intent = new Intent(WelcomeActivity.this,
 							MainActivity.class);
 					intent.putExtra("from", WelcomeActivity.class.getName());
 					startActivity(intent);
-					WelcomeActivity.this.finish();
-					break;
+				}
 				
-				default :
-					break;
+				WelcomeActivity.this.finish();
+				break;
+
+			default :
+				break;
 			}
 		}
 	};

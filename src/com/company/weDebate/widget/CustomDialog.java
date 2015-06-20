@@ -1,7 +1,7 @@
 package com.company.weDebate.widget;
 
-import com.company.weDebate.R;
 import com.company.weDebate.utils.AndroidUtils;
+import com.company.weDebate.R;
 
 import android.app.Dialog;
 import android.content.Context;

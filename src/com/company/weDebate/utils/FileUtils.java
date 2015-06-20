@@ -10,7 +10,7 @@ import android.os.Environment;
 
 public class FileUtils {
 	// SD卡文件根目录名称
-	public final static String ROOT_DIRECTORY = "Pg_600";
+	public final static String ROOT_DIRECTORY = "weDebate";
 	// 图片文件夹名称
 	public final static String IMAGECACHE = "imagecache";
 	private static java.text.DecimalFormat df = new java.text.DecimalFormat("#.##");

@@ -1,7 +1,9 @@
 package com.company.weDebate;
 
 import java.io.File;
+
 import com.company.weDebate.utils.FileUtils;
+import com.company.weDebate.R;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
 import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -11,6 +13,7 @@ import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 import com.nostra13.universalimageloader.core.process.BitmapProcessor;
 import com.nostra13.universalimageloader.utils.StorageUtils;
+
 import android.app.Application;
 import android.content.Context;
 import android.graphics.Bitmap;

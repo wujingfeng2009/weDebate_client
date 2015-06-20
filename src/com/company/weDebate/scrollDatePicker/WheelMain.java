@@ -3,10 +3,8 @@ package com.company.weDebate.scrollDatePicker;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
-
-import com.company.weDebate.R;
 import com.company.weDebate.utils.AndroidUtils;
-
+import com.company.weDebate.R;
 import android.content.Context;
 import android.view.Gravity;
 import android.view.View;

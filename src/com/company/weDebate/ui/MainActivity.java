@@ -1,13 +1,12 @@
 ﻿package com.company.weDebate.ui;
 
-import com.company.weDebate.R;
 import com.company.weDebate.base.BaseFragmentActivity;
 import com.company.weDebate.fragment.MainFragment;
 import com.company.weDebate.fragment.SettingsFragment;
 import com.company.weDebate.fragment.SmartHomeFragment;
 import com.company.weDebate.utils.AndroidUtils;
 import com.company.weDebate.widget.CustomToast;
-
+import com.company.weDebate.R;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

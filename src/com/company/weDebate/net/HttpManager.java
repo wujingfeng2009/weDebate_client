@@ -19,11 +19,9 @@ import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.zip.GZIPInputStream;
-
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
-
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpException;
@@ -63,11 +61,9 @@ import org.json.JSONStringer;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 import org.xmlpull.v1.XmlSerializer;
-
-import com.company.weDebate.R;
 import com.company.weDebate.utils.AndroidUtils;
 import com.company.weDebate.utils.LogUtil;
-
+import com.company.weDebate.R;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
@@ -82,7 +78,7 @@ import android.util.Log;
  */
 
 public class HttpManager {
-	private static final String TAG = "pg_600";
+	private static final String TAG = "weDebate";
 	
 	public static final String HTTPMETHOD_POST = "POST";
 	public static final String HTTPMETHOD_GET = "GET";
@@ -160,14 +156,7 @@ public class HttpManager {
 									"application/x-www-form-urlencoded");
 						}
 
-						String postParam = assembleJson(context, params)/*
-																		 * HttpUtils
-																		 * .
-																		 * encodeParameters
-																		 * (
-																		 * params
-																		 * )
-																		 */;
+						String postParam = assembleJson(context, params);
 
 						data = postParam.getBytes("UTF-8");
 						bos.write(data);

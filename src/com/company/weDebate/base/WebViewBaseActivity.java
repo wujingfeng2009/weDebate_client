@@ -1,14 +1,11 @@
 package com.company.weDebate.base;
 
 import java.lang.reflect.Field;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import com.company.weDebate.R;
 import com.company.weDebate.utils.AndroidUtils;
 import com.company.weDebate.widget.CustomToast;
-
+import com.company.weDebate.R;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;

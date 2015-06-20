@@ -21,9 +21,7 @@ package com.company.weDebate.scrollDatePicker;
 
 import java.util.LinkedList;
 import java.util.List;
-
 import com.company.weDebate.R;
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;

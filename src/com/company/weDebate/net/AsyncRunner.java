@@ -81,6 +81,11 @@ public abstract class AsyncRunner<T> {
 				if (requestListener != null)
 					requestListener.onError(e);
 				return -1;
+			} catch (Exception e) {
+				e.printStackTrace();
+				if (requestListener != null)
+					requestListener.onError(e);
+				return -1;
 			}
 			return 0;
 		}
@@ -131,7 +136,7 @@ public abstract class AsyncRunner<T> {
 				if (requestListener != null)
 					requestListener.onError(e);
 				return -1;
-			} catch (Exception e) {// 捕获fastJson的解析异常
+			} catch (Exception e) {
 				e.printStackTrace();
 				if (requestListener != null)
 					requestListener.onError(e);
@@ -140,16 +145,17 @@ public abstract class AsyncRunner<T> {
 
 			return 0;
 		}
-		
+
 		private String parseXML(String result, String action) {
-			if(TextUtils.isEmpty(result)) {
+			if (TextUtils.isEmpty(result)) {
 				return null;
 			}
-			
+
 			String sqliteContent = action + "Result";
-			int start = result.indexOf(sqliteContent) + sqliteContent.length() + 1;
+			int start = result.indexOf(sqliteContent) + sqliteContent.length()
+					+ 1;
 			int end = result.indexOf("/" + sqliteContent) - 1;
-			
+
 			return result.substring(start, end);
 		}
 

@@ -1,7 +1,7 @@
 package com.company.weDebate.widget;
 
-import com.company.weDebate.R;
 import com.company.weDebate.scrollDatePicker.WheelMain;
+import com.company.weDebate.R;
 
 import android.app.Activity;
 import android.content.Context;

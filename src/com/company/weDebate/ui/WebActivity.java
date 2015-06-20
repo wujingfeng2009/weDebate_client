@@ -1,10 +1,8 @@
 package com.company.weDebate.ui;
 
 import java.lang.reflect.Field;
-
-import com.company.weDebate.R;
 import com.company.weDebate.base.BaseActivity;
-
+import com.company.weDebate.R;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;

@@ -1,7 +1,6 @@
 package com.company.weDebate.base;
 
 import com.company.weDebate.R;
-
 import android.app.Dialog;
 import android.support.v4.app.Fragment;
 import android.widget.TextView;

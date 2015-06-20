@@ -14,10 +14,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	
 	public static final int DATABASE_VERSION = 1;
 	
-	private static final String DB_CREAT = "CREATE TABLE " + FrameDatabase.FRAME_TABLE_NAME + " (" + FrameTableColumns._ID + " INTEGER PRIMARY KEY" + ");";
+	private static final String DB_CREAT = "CREATE TABLE " + WeDebateDatabase.FRAME_TABLE_NAME + " (" + WeDebateTableColumns._ID + " INTEGER PRIMARY KEY" + ");";
 	
 	DatabaseHelper(Context context) {
-		super(context, FrameDatabase.DATABASE_NAME, null, DATABASE_VERSION);
+		super(context, WeDebateDatabase.DATABASE_NAME, null, DATABASE_VERSION);
 	}
 	
 	@Override
@@ -29,7 +29,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		ILog.LogI(DatabaseHelper.class, "Upgrading database from version " + oldVersion + " to " + newVersion + ".");
 		
-		db.execSQL("DROP TABLE IF EXISTS " + FrameDatabase.FRAME_TABLE_NAME);
+		db.execSQL("DROP TABLE IF EXISTS " + WeDebateDatabase.FRAME_TABLE_NAME);
 		onCreate(db);
 	}
 }
