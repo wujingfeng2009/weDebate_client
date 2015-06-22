@@ -1,5 +1,7 @@
 package com.company.weDebate.base;
 
+import com.avos.avoscloud.AVAnalytics;
+import com.avos.avoscloud.AVUser;
 import com.company.weDebate.R;
 import android.app.Activity;
 import android.app.Dialog;
@@ -17,6 +19,8 @@ public abstract class BaseActivityGroup extends Activity {
 	public boolean isRun = false;// 用于处理viewpager循环播放
 	public boolean isDown = false;// 用于处理viewpager循环播放
 	private Dialog mProgressDialog;
+
+	private String userId;
 
 	public final static String INTO_CART_FRAGMENT = "INTO_CART_FRAGMENT";
 	private MyBroadCastReceiver receiver;
@@ -38,6 +42,12 @@ public abstract class BaseActivityGroup extends Activity {
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(INTO_CART_FRAGMENT);
 		registerReceiver(receiver, filter);
+
+		AVUser currentUser = AVUser.getCurrentUser();
+		if (currentUser != null) {
+			userId = currentUser.getObjectId();
+		}
+
 		initData();
 		initView();
 		setAttribute();
@@ -51,6 +61,20 @@ public abstract class BaseActivityGroup extends Activity {
 
 	// 初始化UI控件
 	protected abstract void setAttribute();
+
+	public String getUserId() {
+		return userId;
+	}
+
+	protected void onPause() {
+		super.onPause();
+		AVAnalytics.onPause(this);
+	}
+
+	protected void onResume() {
+		super.onResume();
+		AVAnalytics.onResume(this);
+	}
 
 	/**
 	 * 显示等待框
