@@ -56,11 +56,18 @@
     <string name="confirmPw_error_string">两次输入的密码不一致</string>
     <string name="register_failed">注册失败</string>
     <string name="register_success">注册成功</string>
+    <string name="error_register_user_name_repeat">用户名已被注册，请重新填写</string>
     <string name="commit_string">提交</string>
     <string name="register_btn_string">立即注册</string>
     <string name="login_title">登录</string>
     <string name="register_title">注册</string>
     <string name="find_pw_title">找回密码</string>
     <string name="count_down_re_verify">%1$s秒后可重新获取</string>
+    <string name="complete_info_string">完善资料</string>
+    <string name="register_send_sms_error">验证码获取失败，请确认您的手机号码</string>
+    <string name="verify_sms_code_error">验证码错误</string>
+    <string name="account_null_string">账号不能为空</string>
+    <string name="account_error_string">请输入正确的手机号</string>
+    <string name="reset_pwd_error">重置密碼失敗</string>
 
 </resources>

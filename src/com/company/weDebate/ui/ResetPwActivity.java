@@ -4,6 +4,13 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.RequestMobileCodeCallback;
+import com.avos.avoscloud.UpdatePasswordCallback;
+import com.company.weDebate.R;
+import com.company.weDebate.base.BaseActivity;
+import com.company.weDebate.widget.CustomToast;
+
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Handler;
@@ -17,24 +24,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.weetmall.weetmall.R;
-import com.weetmall.weetmall.base.BaseActivity;
-import com.weetmall.weetmall.bean.ForgetPwBean;
-import com.weetmall.weetmall.net.HttpManager;
-import com.weetmall.weetmall.net.HttpUrlManager;
-import com.weetmall.weetmall.net.RequestListener;
-import com.weetmall.weetmall.net.RequestParams;
-import com.weetmall.weetmall.task.ForgetPwTask;
-import com.weetmall.weetmall.utils.LogUtil;
-import com.weetmall.weetmall.widget.CustomToast;
-
 /**
  * 重置密码界面
  * 
  */
 public class ResetPwActivity extends BaseActivity implements OnClickListener {
 
-	public final static String LOG_TAG = "com.weetmall.weetmall";
+	public final static String LOG_TAG = "weDebate";
+	
 	private final static int REQUEST_SUCCESS = 0x01;// 请求成功
 	private final static int REQUEST_FAILED = 0x02;// 请求失败
 	public final static int RESET_PW_SUCESS = 0x03;// 重置密码成功
@@ -48,29 +45,25 @@ public class ResetPwActivity extends BaseActivity implements OnClickListener {
 	private Button getCodeBtn;// 获取验证码按钮
 	private Button completeBtn;// 完成按钮
 
-	private RequestParams requestParams;// 请求参数封装的键值对
-
 	private ScheduledExecutorService executorService;// 计时器任务
 	private int totalTime = 60;// 获取验证码倒计时总时间
 	private final static int TIME_REMAIN = 0;// 倒计时正在进行
 	private final static int TIME_UP = 1;// 倒计时结束
 
 	private String accountStr = "";// 账号
-	private int loginType = 0;// 0-手机号；1-邮箱
 
 	@Override
 	protected void initData() {
-		requestParams = new RequestParams();
 		Intent intent = getIntent();
 		if (intent != null) {
 			accountStr = intent.getStringExtra("account");
-			loginType = intent.getIntExtra("loginType", 0);
 		}
 	}
 
 	@Override
 	protected void initView() {
 		setContentView(R.layout.reset_pw);
+		
 		titleTv = (TextView) this.findViewById(R.id.titleText);
 		backLl = (LinearLayout) this.findViewById(R.id.backLl);
 		codeEt = (EditText) this.findViewById(R.id.codeEt);
@@ -98,7 +91,7 @@ public class ResetPwActivity extends BaseActivity implements OnClickListener {
 			this.finish();
 			break;
 		case R.id.getCodeBtn:// 重新获取验证码按钮
-			reGetCode(accountStr, loginType);
+			reGetCode(accountStr);
 			break;
 		case R.id.completeBtn:// 完成按钮
 			resetPassword();
@@ -178,65 +171,31 @@ public class ResetPwActivity extends BaseActivity implements OnClickListener {
 	/**
 	 * 重新获取验证码
 	 */
-	private void reGetCode(String account, int type) {
+	private void reGetCode(String account) {
 		showProgress(null, null);
-		String url = "";
-		ForgetPwTask task = new ForgetPwTask();
-		requestParams.clear();
-		switch (type) {
-		case 0:// 手机号
-			url = HttpUrlManager.findPwByMobileUrl();
-			requestParams.add("mobile", account);
-			requestParams.add("smstype", "findpwd");
-			break;
-		case 1:// 邮箱
-			url = HttpUrlManager.findPwByEmailUrl();
-			requestParams.add("email", account);
-			break;
-		default:
-			break;
-		}
-		task.request(ResetPwActivity.this, url, HttpManager.HTTPMETHOD_JSON,
-				requestParams, requestListener);
-	}
 
-	/**
-	 * 重新获验证码接口监听类
-	 */
-	private RequestListener<ForgetPwBean> requestListener = new RequestListener<ForgetPwBean>() {
+		RequestMobileCodeCallback callback = new RequestMobileCodeCallback() {
 
-		@Override
-		public void OnStart() {
-			LogUtil.d(LOG_TAG, "开始请求OnStart-----------");
-		}
+			@Override
+			public void done(AVException e) {
 
-		@Override
-		public void onError(Exception e) {
-			dismissProgress();
-			LogUtil.d(LOG_TAG, "onError-----------" + e.getMessage());
-			mHandler.obtainMessage(REQUEST_FAILED, e.getMessage())
-					.sendToTarget();
-		}
+				dismissProgress();
 
-		@Override
-		public void OnPaserComplete(ForgetPwBean bean) {
-			dismissProgress();
-			if (bean != null) {
-				LogUtil.d(LOG_TAG, "OnPaserComplete:" + bean.getMsg());
-				if ("1".equals(bean.getStatus())) {
-					mHandler.obtainMessage(REQUEST_SUCCESS, bean.getMsg())
+				if (e==null) {
+					mHandler.obtainMessage(REQUEST_SUCCESS,
+							"")
 							.sendToTarget();
 				} else {
-					mHandler.obtainMessage(REQUEST_FAILED, bean.getMsg())
+					mHandler.obtainMessage(REQUEST_FAILED,
+							getString(R.string.register_send_sms_error))
 							.sendToTarget();
 				}
-			} else {
-				mHandler.obtainMessage(REQUEST_FAILED,
-						getString(R.string.request_failed_string))
-						.sendToTarget();
+
 			}
-		}
-	};
+		};
+
+		AVService.requestPwdBySmsCode(account, callback);
+	}
 
 	/**
 	 * handler用于处理网络请求的返回数据
@@ -322,64 +281,24 @@ public class ResetPwActivity extends BaseActivity implements OnClickListener {
 	// 联网请求重置密码
 	private void requestResetPw(String code, String pw) {
 		showProgress(null, null);
-		String url = "";
 
-		ForgetPwTask task = new ForgetPwTask();
-		requestParams.clear();
-		switch (loginType) {
-		case 0:// 手机号
-			url = HttpUrlManager.resetPwByMobileUrl();
-			requestParams.add("mobile", accountStr);
-			break;
-		case 1:// 邮箱
-			url = HttpUrlManager.resetPwByEmailUrl();
-			requestParams.add("email", accountStr);
-			break;
-		default:
-			break;
-		}
-		requestParams.add("code", code);
-		requestParams.add("password", pw);
-		requestParams.add("repwd", pw);
-		task.request(ResetPwActivity.this, url, HttpManager.HTTPMETHOD_JSON,
-				requestParams, resetListener);
-	}
+		UpdatePasswordCallback callback = new UpdatePasswordCallback() {
+			@Override
+			public void done(AVException e) {
+				dismissProgress();
 
-	/**
-	 * 重新获验证码接口监听类
-	 */
-	private RequestListener<ForgetPwBean> resetListener = new RequestListener<ForgetPwBean>() {
-
-		@Override
-		public void OnStart() {
-			LogUtil.d(LOG_TAG, "开始请求OnStart-----------");
-		}
-
-		@Override
-		public void onError(Exception e) {
-			dismissProgress();
-			LogUtil.d(LOG_TAG, "onError-----------" + e.getMessage());
-			mHandler.obtainMessage(RESET_PW_FAILED, e.getMessage())
-					.sendToTarget();
-		}
-
-		@Override
-		public void OnPaserComplete(ForgetPwBean bean) {
-			dismissProgress();
-			if (bean != null) {
-				LogUtil.d(LOG_TAG, "OnPaserComplete:" + bean.getMsg());
-				if ("1".equals(bean.getStatus())) {
-					mHandler.obtainMessage(RESET_PW_SUCESS, bean.getMsg())
+				if (e==null) {
+					mHandler.obtainMessage(RESET_PW_SUCESS,
+							"")
 							.sendToTarget();
 				} else {
-					mHandler.obtainMessage(RESET_PW_FAILED, bean.getMsg())
+					mHandler.obtainMessage(RESET_PW_FAILED,
+							getString(R.string.reset_pwd_error))
 							.sendToTarget();
 				}
-			} else {
-				mHandler.obtainMessage(RESET_PW_FAILED,
-						getString(R.string.request_failed_string))
-						.sendToTarget();
 			}
-		}
-	};
+		};
+		
+		AVService.requestPasswordReset(code, pw, callback);
+	}
 }

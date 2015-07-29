@@ -1,10 +1,13 @@
 package com.company.weDebate.adapter;
 
 import java.util.List;
+
 import com.company.weDebate.preferences.MyPreference;
+import com.company.weDebate.ui.LoginActivity;
 import com.company.weDebate.ui.MainActivity;
 import com.company.weDebate.ui.WelcomeActivity;
 import com.company.weDebate.R;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.view.PagerAdapter;
@@ -47,7 +50,7 @@ public class ViewPagerAdapter extends PagerAdapter {
                 @Override  
                 public void onClick(View v) {  
                     // 设置已经引导  
-                	Intent intent = new Intent(activity, MainActivity.class);  
+                	Intent intent = new Intent(activity, LoginActivity.class);  
 					intent.putExtra("from", WelcomeActivity.class.getName());
                     activity.startActivity(intent);  
                     setGuided();

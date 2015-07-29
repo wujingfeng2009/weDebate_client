@@ -1,5 +1,11 @@
 package com.company.weDebate.ui;
 
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.RequestMobileCodeCallback;
+import com.company.weDebate.R;
+import com.company.weDebate.base.BaseActivity;
+import com.company.weDebate.utils.AndroidUtils;
+import com.company.weDebate.widget.CustomToast;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
@@ -12,25 +18,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.weetmall.weetmall.R;
-import com.weetmall.weetmall.base.BaseActivity;
-import com.weetmall.weetmall.bean.ForgetPwBean;
-import com.weetmall.weetmall.net.HttpManager;
-import com.weetmall.weetmall.net.HttpUrlManager;
-import com.weetmall.weetmall.net.RequestListener;
-import com.weetmall.weetmall.net.RequestParams;
-import com.weetmall.weetmall.task.ForgetPwTask;
-import com.weetmall.weetmall.utils.AndroidUtils;
-import com.weetmall.weetmall.utils.LogUtil;
-import com.weetmall.weetmall.widget.CustomToast;
-
 /**
  * 忘记密码界面
  * 
  */
 public class ForgetPwActivity extends BaseActivity implements OnClickListener {
 
-	public final static String TAG = "com.weetmall.weetmall";
+	public final static String TAG = "weDebate";
+
 	private final static int RESET_REQUESTCODE = 0;
 	private final static int REQUEST_SUCCESS = 0x01;// 请求成功
 	private final static int REQUEST_FAILED = 0x02;// 请求失败
@@ -40,12 +35,8 @@ public class ForgetPwActivity extends BaseActivity implements OnClickListener {
 	private EditText accountNameEdit;// 账号输入框
 	private Button findPwBtn;// 找回密码按钮
 
-	private RequestParams requestParams;// 请求参数封装的键值对
-	private int loginType = 0;
-
 	@Override
 	protected void initData() {
-		requestParams = new RequestParams();
 	}
 
 	@Override
@@ -80,98 +71,56 @@ public class ForgetPwActivity extends BaseActivity implements OnClickListener {
 		}
 	}
 
-	// 判断输入的账号是否为手机号或者邮箱地址
 	private void checkAccount() {
 		// 账号
 		String uname = accountNameEdit.getText().toString().trim();
 		// 账号不能为空
 		if (TextUtils.isEmpty(uname)) {
 			CustomToast
-					.getToast(ForgetPwActivity.this,
-							getString(R.string.account_null_string),
-							Toast.LENGTH_SHORT).show();
+			.getToast(ForgetPwActivity.this,
+					getString(R.string.account_null_string),
+					Toast.LENGTH_SHORT).show();
 			return;
 		}
 
-		if (!AndroidUtils.isMobileNO(uname) && !AndroidUtils.isEmail(uname)) {
+		if (!AndroidUtils.isMobileNO(uname)) {
 			CustomToast.getToast(ForgetPwActivity.this,
 					getString(R.string.account_error_string),
 					Toast.LENGTH_SHORT).show();
 			return;
-		} else {
-			if (AndroidUtils.isMobileNO(uname)) {
-				loginType = 0;
-			}
-			if (AndroidUtils.isEmail(uname)) {
-				loginType = 1;
-			}
 		}
-		
-		findpw(uname, loginType);
+
+		findpw(uname);
 	}
 
 	/**
 	 * 提交邮箱或者手机号
 	 */
-	private void findpw(String account, int type) {
+	private void findpw(String account) {
 		showProgress(null, null);
-		String url = "";
-		ForgetPwTask task = new ForgetPwTask();
-		requestParams.clear();
-		switch (type) {
-		case 0:// 手机号
-			url = HttpUrlManager.findPwByMobileUrl();
-			requestParams.add("mobile", account);
-			requestParams.add("smstype", "findpwd");
-			break;
-		case 1:// 邮箱
-			url = HttpUrlManager.findPwByEmailUrl();
-			requestParams.add("email", account);
-			break;
-		default:
-			break;
-		}
-		task.request(ForgetPwActivity.this, url, HttpManager.HTTPMETHOD_JSON,
-				requestParams, requestListener);
-	}
 
-	/**
-	 * 登录接口监听类
-	 */
-	private RequestListener<ForgetPwBean> requestListener = new RequestListener<ForgetPwBean>() {
+		RequestMobileCodeCallback callback = new RequestMobileCodeCallback() {
 
-		@Override
-		public void OnStart() {
-			LogUtil.d(TAG, "开始请求OnStart-----------");
-		}
+			@Override
+			public void done(AVException e) {
 
-		@Override
-		public void onError(Exception e) {
-			dismissProgress();
-			LogUtil.d(TAG, "onError-----------" + e.getMessage());
-			mHandler.obtainMessage(REQUEST_FAILED, e.getMessage())
-					.sendToTarget();
-		}
+				dismissProgress();
 
-		@Override
-		public void OnPaserComplete(ForgetPwBean bean) {
-			dismissProgress();
-			if (bean != null) {
-				LogUtil.d(TAG, "OnPaserComplete:" + bean.getMsg());
-				if ("1".equals(bean.getStatus())) {
-					mHandler.obtainMessage(REQUEST_SUCCESS, bean.getMsg())
+				if (e==null) {
+					mHandler.obtainMessage(REQUEST_SUCCESS,
+							"")
 							.sendToTarget();
 				} else {
-					mHandler.obtainMessage(REQUEST_FAILED, bean.getMsg())
+					mHandler.obtainMessage(REQUEST_FAILED,
+							getString(R.string.register_send_sms_error))
 							.sendToTarget();
 				}
-			} else {
-				mHandler.obtainMessage(REQUEST_FAILED,
-						getString(R.string.request_failed_string))
-						.sendToTarget();
+
 			}
-		}
-	};
+		};
+
+		AVService.requestPwdBySmsCode(account, callback);
+	}
 
 	/**
 	 * handler用于处理网络请求的返回数据
@@ -183,7 +132,7 @@ public class ForgetPwActivity extends BaseActivity implements OnClickListener {
 			super.handleMessage(msg);
 			Object object = msg.obj;
 			switch (msg.what) {
-			case REQUEST_FAILED:// 登录失败
+			case REQUEST_FAILED:// 请求失败
 				if (!TextUtils.isEmpty(String.valueOf(object))) {
 					CustomToast.getToast(ForgetPwActivity.this,
 							String.valueOf(object), Toast.LENGTH_SHORT).show();
@@ -197,7 +146,6 @@ public class ForgetPwActivity extends BaseActivity implements OnClickListener {
 				Intent intent = new Intent(ForgetPwActivity.this,
 						ResetPwActivity.class);
 				intent.putExtra("account", accountNameEdit.getText().toString().trim());
-				intent.putExtra("loginType", loginType);
 				startActivityForResult(intent, RESET_REQUESTCODE);
 				break;
 			default:

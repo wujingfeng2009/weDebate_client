@@ -2,6 +2,7 @@ package com.company.weDebate;
 
 import java.io.File;
 
+import com.avos.avoscloud.AVOSCloud;
 import com.company.weDebate.utils.FileUtils;
 import com.company.weDebate.R;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
@@ -26,6 +27,12 @@ public class MyApplication extends Application {
 	
 	@Override
 	public void onCreate() {
+		AVOSCloud.useAVCloudCN();
+		// U need your AVOS key and so on to run the code.
+		AVOSCloud.initialize(this,
+				"ueodqou3k8jg1ksbedfyf8bs1q2hxdc2hxmzzmriub20a1ol",
+				"w0rdh0d4vch2wn0zqxg3pl7vt5kkvk9ojjtlrku8shttriz1");
+		
 		initImageLoader(this);
 	}
 	

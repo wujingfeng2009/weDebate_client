@@ -37,6 +37,7 @@ public abstract class BaseActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
 		receiver = new MyBroadCastReceiver();
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(INTO_CART_FRAGMENT);

@@ -46,9 +46,13 @@ public class AVService {
     doing.put("doingListChildObjectId", doingObjectId);
     doing.saveInBackground();
   }
+  
+  public static void requestPwdBySmsCode(String phoneNum, RequestMobileCodeCallback callback) {
+	  AVUser.requestPasswordResetBySmsCodeInBackground(phoneNum, callback);
+  }
 
-  public static void requestPasswordReset(String email, RequestPasswordResetCallback callback) {
-    AVUser.requestPasswordResetInBackground(email, callback);
+  public static void requestPasswordReset(String smsCode, String newPwd, UpdatePasswordCallback callback) {
+    AVUser.resetPasswordBySmsCodeInBackground(smsCode, newPwd, callback);
   }
 
   public static void findDoingListGroup(FindCallback<AVObject> findCallback) {
@@ -70,11 +74,19 @@ public class AVService {
 //    AVInstallation.getCurrentInstallation().saveInBackground();
 //  }
 
-  public static void signUp(String username, String password, String email, SignUpCallback signUpCallback) {
+  public static void requestMobilePhoneVerify(String phoneNum, RequestMobileCodeCallback rmcCallback) {
+	  AVUser.requestLoginSmsCodeInBackground(phoneNum, rmcCallback);
+  }
+  
+  public static void virifySms(String verifyCode, AVMobilePhoneVerifyCallback amvCallback) {
+	  AVUser.verifyMobilePhoneInBackground(verifyCode, amvCallback);
+  }
+  
+  public static void signUp(String username, String password, String phone, SignUpCallback signUpCallback) {
     AVUser user = new AVUser();
     user.setUsername(username);
     user.setPassword(password);
-    user.setEmail(email);
+    user.setMobilePhoneNumber(phone);
     user.signUpInBackground(signUpCallback);
   }
 
