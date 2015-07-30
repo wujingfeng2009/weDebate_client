@@ -69,5 +69,8 @@
     <string name="account_null_string">账号不能为空</string>
     <string name="account_error_string">请输入正确的手机号</string>
     <string name="reset_pwd_error">重置密碼失敗</string>
+    <string name="toast_login_now">正在登录</string>
+        <string name="login_success_string">登录成功</string>
+    <string name="login_failed_string">登录失败</string>
 
 </resources>
