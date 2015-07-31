@@ -54,10 +54,11 @@ public class WelcomeActivity extends BaseActivity {
 				if (sp.getPerferenceIsFirst()) {
 					startActivity(new Intent(WelcomeActivity.this, GuideActivity.class));
 				}else  {
-					Intent intent = new Intent(WelcomeActivity.this,
-							MainActivity.class);
-					intent.putExtra("from", WelcomeActivity.class.getName());
-					startActivity(intent);
+//					Intent intent = new Intent(WelcomeActivity.this,
+//							MainActivity.class);
+//					intent.putExtra("from", WelcomeActivity.class.getName());
+//					startActivity(intent);
+					startActivity(new Intent(WelcomeActivity.this, LoginActivity.class));
 				}
 				
 				WelcomeActivity.this.finish();

@@ -42,7 +42,7 @@ public class ForgetPwActivity extends BaseActivity implements OnClickListener {
 	@Override
 	protected void initView() {
 		setContentView(R.layout.forget_pw);
-		titleTv = (TextView) this.findViewById(R.id.titleText);
+		titleTv = (TextView) this.findViewById(R.id.titleTv);
 		backLl = (LinearLayout) this.findViewById(R.id.backLl);
 		accountNameEdit = (EditText) this.findViewById(R.id.accountNameEdit);
 		findPwBtn = (Button) this.findViewById(R.id.findPwBtn);

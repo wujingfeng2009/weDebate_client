@@ -19,7 +19,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -66,7 +65,7 @@ public class RegisterActivity extends BaseActivity implements OnClickListener {
 	@Override
 	protected void initView() {
 		setContentView(R.layout.register);
-		titleTextView = (TextView) this.findViewById(R.id.titleText);
+		titleTextView = (TextView) this.findViewById(R.id.titleTv);
 		backLl = (LinearLayout) this.findViewById(R.id.backLl);
 		phoneTextString = (TextView) this.findViewById(R.id.phoneTextString);
 		phoneNumEdit = (EditText) this.findViewById(R.id.phoneNumEdit);

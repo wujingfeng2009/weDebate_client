@@ -29,9 +29,12 @@ public class MyApplication extends Application {
 	public void onCreate() {
 		AVOSCloud.useAVCloudCN();
 		// U need your AVOS key and so on to run the code.
+//		AVOSCloud.initialize(this,
+//				"ueodqou3k8jg1ksbedfyf8bs1q2hxdc2hxmzzmriub20a1ol",
+//				"w0rdh0d4vch2wn0zqxg3pl7vt5kkvk9ojjtlrku8shttriz1");
 		AVOSCloud.initialize(this,
-				"ueodqou3k8jg1ksbedfyf8bs1q2hxdc2hxmzzmriub20a1ol",
-				"w0rdh0d4vch2wn0zqxg3pl7vt5kkvk9ojjtlrku8shttriz1");
+				"70l90kzm53nplnu013ala0j8wipr594d36m5zuz94ukvmh5s",
+				"lamrsuheyiaqcx4o7m3jaz4awaeukerit1mucnjwk7ibokfv");
 		
 		initImageLoader(this);
 	}

@@ -64,7 +64,7 @@ public class ResetPwActivity extends BaseActivity implements OnClickListener {
 	protected void initView() {
 		setContentView(R.layout.reset_pw);
 		
-		titleTv = (TextView) this.findViewById(R.id.titleText);
+		titleTv = (TextView) this.findViewById(R.id.titleTv);
 		backLl = (LinearLayout) this.findViewById(R.id.backLl);
 		codeEt = (EditText) this.findViewById(R.id.codeEt);
 		newPwEt = (EditText) this.findViewById(R.id.newPwEt);
